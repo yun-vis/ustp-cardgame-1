@@ -11,25 +11,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout the code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js (Version 20 is standard/LTS)
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm' # This speeds up subsequent builds
+          node-version: '24' # Keeping your version
+          cache: 'npm'
 
-      # 3. Install dependencies
-      # 'npm ci' is like 'npm install' but faster/safer for CI tools
       - name: Install dependencies
         run: npm install
 
-      # 4. Run the build (Vite build)
+      - name: Run Unit Tests
+        run: npm run test
+
+      - name: Upload Test Results
+        if: always() # Run this even if tests fail, so we can see WHAT failed
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results.xml
+
       - name: Build project
         run: npm run build
-
-      - name: Close server
-        run: 
