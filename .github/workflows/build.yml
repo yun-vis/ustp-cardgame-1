@@ -29,4 +29,7 @@ jobs:
 
       # 4. Run the build (Vite build)
       - name: Build project
-        run: npm run dev
+        run: npm run build
+
+      - name: Close server
+        run: 
